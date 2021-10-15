@@ -1,8 +1,8 @@
 package com.example.continuewatch
 
-import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
     private var secondsElapsed: Int = 0
