@@ -1,14 +1,18 @@
 package com.example.continuewatch
 
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private var secondsElapsed: Int = 0
     private lateinit var textSecondsElapsed: TextView
 
     private var appVisible = false
+
+    private val sharedPref: SharedPreferences? by lazy { getPreferences(Context.MODE_PRIVATE) }
 
     private var backgroundThread = Thread {
         while (true) {
@@ -31,25 +35,19 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         appVisible = true
+        secondsElapsed = sharedPref?.getInt(STATE_TIME, 0) ?: 0
+        textSecondsElapsed.text = getString(R.string.seconds_elapsed, secondsElapsed++)
+
     }
 
     override fun onStop() {
         super.onStop()
         appVisible = false
+        sharedPref?.edit()
+            ?.putInt(STATE_TIME, secondsElapsed)
+            ?.apply()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.run {
-            putInt(STATE_TIME, secondsElapsed)
-        }
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        secondsElapsed = savedInstanceState.getInt(STATE_TIME, 0)
-        textSecondsElapsed.text = getString(R.string.seconds_elapsed, secondsElapsed++)
-        super.onRestoreInstanceState(savedInstanceState)
-    }
 
     private companion object {
         private const val STATE_TIME = "secondsElapsed"
