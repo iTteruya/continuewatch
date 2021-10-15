@@ -1,8 +1,8 @@
 package com.example.continuewatch
 
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 
